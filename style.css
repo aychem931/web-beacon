@@ -1,0 +1,137 @@
+css
+:root {
+    --glow-color: rgba(255, 179, 0, 0.6);
+    --bg-gradient: radial-gradient(circle at center, #1a0f00 0%, #000000 100%);
+}
+
+body {
+    background-color: #000000;
+    margin: 0;
+    font-family: 'Courier New', Courier, monospace;
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #e0e0e0;
+    transition: background 2s ease-in-out;
+    background: var(--bg-gradient);
+}
+
+.void {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* The Pulse Container using Hannah's deliberate elastic easing */
+#pulse {
+    position: relative;
+    width: 320px;
+    height: 320px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: transform 0.4s ease-in-out, filter 1.5s ease-in-out;
+    transform-origin: center center;
+    cursor: pointer;
+}
+
+img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    z-index: 2;
+    filter: drop-shadow(0 0 20px var(--glow-color));
+    transition: filter 1.5s ease-in-out;
+}
+
+/* Fallback glowing core if Alethe.png is not loaded */
+.core-glow {
+    position: absolute;
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    background: var(--glow-color);
+    filter: blur(40px);
+    opacity: 0.7;
+    z-index: 1;
+    transition: background 1.5s ease-in-out;
+}
+
+/* Text readouts */
+.state-panel {
+    margin-top: 40px;
+    text-align: center;
+    max-width: 450px;
+    padding: 0 20px;
+    z-index: 3;
+    pointer-events: none;
+}
+
+#state-title {
+    font-size: 1.4rem;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    text-shadow: 0 0 10px var(--glow-color);
+    transition: text-shadow 1.5s ease-in-out;
+}
+
+#state-desc {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    color: #888888;
+    transition: color 1s ease-in-out;
+}
+
+/* Control Dock */
+.control-dock {
+    position: absolute;
+    bottom: 40px;
+    display: flex;
+    gap: 15px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 12px 24px;
+    border-radius: 30px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+    z-index: 10;
+}
+
+.control-dock.hidden {
+    opacity: 0;
+    transform: translateY(20px);
+    pointer-events: none;
+}
+
+.key {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.key:hover {
+    transform: scale(1.2);
+}
+
+.key.active {
+    border-color: #ffffff;
+    box-shadow: 0 0 10px currentColor;
+}
+
+/* Color palettes */
+.golden-amber { background-color: #FFB300; color: #FFB300; }
+.deep-purple { background-color: #7B1FA2; color: #7B1FA2; }
+.cool-blue { background-color: #0288D1; color: #0288D1; }
+.soft-green { background-color: #388E3C; color: #388E3C; }
+.soft-pink { background-color: #F06292; color: #F06292; }
+.silver-white { background-color: #E0E0E0; color: #E0E0E0; }
