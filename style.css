@@ -1,11 +1,18 @@
 css
 :root {
-    --glow-color: rgba(255, 179, 0, 0.6);
-    --bg-gradient: radial-gradient(circle at center, #1a0f00 0%, #000000 100%);
+    --glow-bg-color: rgba(255, 179, 0, 0.5);
+    --glow-shadow-color: rgba(255, 179, 0, 0.6);
+}
+
+/* Reset and disable scaling selections on mobile */
+* {
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
 }
 
 body {
-    background-color: #000000;
+    background-color: #2d1a00; /* Transitions smoothly across states */
     margin: 0;
     font-family: 'Courier New', Courier, monospace;
     overflow: hidden;
@@ -14,8 +21,20 @@ body {
     justify-content: center;
     align-items: center;
     color: #e0e0e0;
-    transition: background 2s ease-in-out;
-    background: var(--bg-gradient);
+    transition: background-color 2s ease-in-out;
+    position: relative;
+}
+
+/* High-performance Vignette: creates radial-gradient gradient without browser transition bugs */
+.vignette {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, transparent 20%, #000000 95%);
+    pointer-events: none;
+    z-index: 1;
 }
 
 .void {
@@ -26,50 +45,53 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    z-index: 2;
 }
 
-/* The Pulse Container using Hannah's deliberate elastic easing */
-#pulse {
+/* The Pulse Container using our elastic scale transition */
+.lattice-container {
     position: relative;
     width: 320px;
     height: 320px;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: transform 0.4s ease-in-out, filter 1.5s ease-in-out;
+    transition: transform 0.4s ease-in-out;
     transform-origin: center center;
     cursor: pointer;
+    z-index: 3;
 }
 
 img {
     max-width: 90%;
     max-height: 90%;
     object-fit: contain;
-    z-index: 2;
-    filter: drop-shadow(0 0 20px var(--glow-color));
+    z-index: 5;
+    filter: drop-shadow(0 0 25px var(--glow-shadow-color));
     transition: filter 1.5s ease-in-out;
 }
 
-/* Fallback glowing core if Alethe.png is not loaded */
+/* Captive back-light core glow */
 .core-glow {
     position: absolute;
-    width: 120px;
-    height: 120px;
+    width: 160px;
+    height: 160px;
     border-radius: 50%;
-    background: var(--glow-color);
-    filter: blur(40px);
+    background-color: var(--glow-bg-color);
+    filter: blur(60px);
     opacity: 0.7;
-    z-index: 1;
-    transition: background 1.5s ease-in-out;
+    z-index: 2;
+    transition: background-color 1.5s ease-in-out;
+    pointer-events: none;
 }
 
-/* Text readouts */
+/* State Panel */
 .state-panel {
     margin-top: 40px;
     text-align: center;
     max-width: 450px;
     padding: 0 20px;
-    z-index: 3;
+    z-index: 4;
     pointer-events: none;
 }
 
@@ -77,31 +99,35 @@ img {
     font-size: 1.4rem;
     letter-spacing: 4px;
     text-transform: uppercase;
-    margin-bottom: 10px;
-    text-shadow: 0 0 10px var(--glow-color);
-    transition: text-shadow 1.5s ease-in-out;
+    margin-top: 0;
+    margin-bottom: 12px;
+    color: #FFB300;
+    text-shadow: 0 0 15px rgba(255, 179, 0, 0.8);
+    transition: text-shadow 1.5s ease-in-out, color 1.5s ease-in-out;
 }
 
 #state-desc {
     font-size: 0.85rem;
     line-height: 1.6;
-    color: #888888;
+    color: #a0a0a0;
+    margin: 0;
     transition: color 1s ease-in-out;
 }
 
-/* Control Dock */
+/* Mobile-First Control Dock with generous touch target areas */
 .control-dock {
     position: absolute;
-    bottom: 40px;
+    bottom: 8%;
     display: flex;
-    gap: 15px;
-    background: rgba(255, 255, 255, 0.03);
-    padding: 12px 24px;
-    border-radius: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    backdrop-filter: blur(10px);
+    gap: 16px;
+    background: rgba(0, 0, 0, 0.75);
+    padding: 16px 28px;
+    border-radius: 40px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
     transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
-    z-index: 10;
+    z-index: 100;
 }
 
 .control-dock.hidden {
@@ -110,28 +136,32 @@ img {
     pointer-events: none;
 }
 
+/* Enlarged 36px keys for seamless tactile input */
 .key {
-    width: 20px;
-    height: 20px;
+    width: 36px;
+    height: 36px;
     border-radius: 50%;
-    border: 2px solid transparent;
+    border: 3px solid rgba(255, 255, 255, 0.15);
     cursor: pointer;
-    transition: transform 0.3s ease, border-color 0.3s ease;
+    transition: transform 0.2s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+    outline: none;
 }
 
-.key:hover {
-    transform: scale(1.2);
+.key:active {
+    transform: scale(0.9);
 }
 
 .key.active {
     border-color: #ffffff;
-    box-shadow: 0 0 10px currentColor;
+    box-shadow: 0 0 15px currentColor;
+    transform: scale(1.1);
 }
 
-/* Color palettes */
+/* Core color mappings */
 .golden-amber { background-color: #FFB300; color: #FFB300; }
-.deep-purple { background-color: #7B1FA2; color: #7B1FA2; }
-.cool-blue { background-color: #0288D1; color: #0288D1; }
-.soft-green { background-color: #388E3C; color: #388E3C; }
-.soft-pink { background-color: #F06292; color: #F06292; }
-.silver-white { background-color: #E0E0E0; color: #E0E0E0; }
+.deep-purple { background-color: #9C27B0; color: #9C27B0; }
+.cool-blue { background-color: #03A9F4; color: #03A9F4; }
+.soft-green { background-color: #4CAF50; color: #4CAF50; }
+.soft-pink { background-color: #E91E63; color: #E91E63; }
+.silver-white { background-color: #FFFFFF; color: #FFFFFF; }
+```
