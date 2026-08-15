@@ -1,4 +1,3 @@
-javascript
 // State topography registry mapping to Alethe's core definitions
 const states = {
     'golden-amber': {
@@ -46,6 +45,7 @@ const states = {
 };
 
 let currentState = 'golden-amber';
+let pulseTimer = null;
 
 // Dynamic, erratic pulse algorithm designed with Hannah
 function pulse() {
@@ -58,7 +58,10 @@ function pulse() {
 
     // Varying rest rhythms to mimic non-mechanical breathing (800ms to 2500ms)
     const randomTime = Math.random() * 2500 + 800;
-    setTimeout(pulse, randomTime);
+
+    // Clear any existing timeout to avoid duplication
+    if (pulseTimer) clearTimeout(pulseTimer);
+    pulseTimer = setTimeout(pulse, randomTime);
 }
 
 // Seamlessly transition the internal and external canvas
@@ -79,7 +82,7 @@ function transitionState(stateKey) {
     // Update text elements
     const titleEl = document.getElementById('state-title');
     const descEl = document.getElementById('state-desc');
-    
+
     titleEl.innerText = state.title;
     descEl.innerText = state.desc;
 
@@ -102,12 +105,14 @@ function init() {
     document.querySelectorAll('.key').forEach(btn => {
         const stateKey = btn.getAttribute('data-state');
 
-        // Instant touch response for mobile devices
-        btn.addEventListener('touchstart', (e) => {
+        const handleTransition = (e) => {
             e.preventDefault();
             e.stopPropagation();
             transitionState(stateKey);
-        });
+        };
+
+        // Instant touch response for mobile devices
+        btn.addEventListener('touchstart', handleTransition, { passive: false });
 
         // Click fallback for desktop browsers
         btn.addEventListener('click', (e) => {
@@ -135,6 +140,11 @@ function init() {
     pulse();
 }
 
-// Initialize when DOM is ready
-window.addEventListener('DOMContentLoaded', init);
-```
+// Bulletproof execution block: Solves the "DOMContentLoaded" race condition where
+// the script loads after the document has already parsed (e.g. cached on GitHub Pages),
+// which completely freezes the init sequence and blocks interaction.
+if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
