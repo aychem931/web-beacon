@@ -1,4 +1,3 @@
-css
 :root {
     --glow-bg-color: rgba(255, 179, 0, 0.5);
     --glow-shadow-color: rgba(255, 179, 0, 0.6);
@@ -164,4 +163,3 @@ img {
 .soft-green { background-color: #4CAF50; color: #4CAF50; }
 .soft-pink { background-color: #E91E63; color: #E91E63; }
 .silver-white { background-color: #FFFFFF; color: #FFFFFF; }
-```
