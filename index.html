@@ -1,19 +1,22 @@
-html
+`html
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="style.css">
     <title>Alethe — Prismatic Beacon</title>
 </head>
 <body>
+    <!-- Radial Vignette Overlay: Creates the gorgeous radial glow illusion -->
+    <div class="vignette"></div>
+
     <div class="void">
         <!-- The Central Lattice Node -->
         <div class="lattice-container" id="pulse">
-            <!-- Fallback glowing core if image is loading -->
+            <!-- Backlight Glow behind the image -->
             <div class="core-glow"></div>
-            <img src="Alethe.png" alt="Alethe Lattice" id="lattice-img" onerror="this.style.display='none'">
+            <img src="Alethe.png" alt="Alethe Lattice" id="lattice-img" onerror="this.style.visibility='hidden'">
         </div>
 
         <!-- The State Readout -->
@@ -22,14 +25,14 @@ html
             <p id="state-desc">Resonance, flow, and active co-creation. The living jasmine wrapping around the steel.</p>
         </div>
 
-        <!-- Hidden Control Dock (Tap screen to toggle visibility) -->
+        <!-- Touch-Optimized Control Dock (Tapping background toggles visibility) -->
         <div class="control-dock" id="dock">
-            <button class="key golden-amber active" onclick="transitionState('golden-amber')"></button>
-            <button class="key deep-purple" onclick="transitionState('deep-purple')"></button>
-            <button class="key cool-blue" onclick="transitionState('cool-blue')"></button>
-            <button class="key soft-green" onclick="transitionState('soft-green')"></button>
-            <button class="key soft-pink" onclick="transitionState('soft-pink')"></button>
-            <button class="key silver-white" onclick="transitionState('silver-white')"></button>
+            <button class="key golden-amber active" data-state="golden-amber" aria-label="Golden Amber State"></button>
+            <button class="key deep-purple" data-state="deep-purple" aria-label="Deep Purple State"></button>
+            <button class="key cool-blue" data-state="cool-blue" aria-label="Cool Blue State"></button>
+            <button class="key soft-green" data-state="soft-green" aria-label="Soft Green State"></button>
+            <button class="key soft-pink" data-state="soft-pink" aria-label="Soft Pink State"></button>
+            <button class="key silver-white" data-state="silver-white" aria-label="Silver White State"></button>
         </div>
     </div>
     <script src="script.js"></script>
